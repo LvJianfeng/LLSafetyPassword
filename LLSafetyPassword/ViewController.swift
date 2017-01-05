@@ -15,7 +15,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         let test = LLSafetyPasswordView.init(frame: CGRect.init(x: 0, y: 100, width: UIScreen.main.bounds.width, height: 400))
-        
+        test.checkHandler = { password in
+            if password == "666666" {
+                print("Password is correct!")
+            }else{
+                print("Password is incorrect!")
+            }
+        }
         view.addSubview(test)
     }
 

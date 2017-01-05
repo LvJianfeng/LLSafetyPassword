@@ -7,19 +7,22 @@
 //
 
 import UIKit
+typealias CheckPasswordHandler = (String) -> Void
 
 class LLSafetyPasswordView: UIView, UITextFieldDelegate {
 
     // 密码位数
-    let passwordCount: Int = 6
+    fileprivate let passwordCount: Int = 6
     // 设置方块格高
-    let passwordHeight: CGFloat = 49
+    fileprivate let passwordHeight: CGFloat = 49
     // 密码圆点大小
-    let roundHW = 10
+    fileprivate let roundHW = 10
     // Leading
-    let leading: CGFloat = 15.0
+    fileprivate let leading: CGFloat = 15.0
     // Top
-    let top: CGFloat = 60.0
+    fileprivate let top: CGFloat = 60.0
+    // 密码输入完成后的回调
+    var checkHandler: CheckPasswordHandler?
     
     lazy var textField: UITextField = {
         let ptextField = UITextField.init()
@@ -38,7 +41,7 @@ class LLSafetyPasswordView: UIView, UITextFieldDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.red
+        self.backgroundColor = UIColor.white
         // Setup TextField
         setupTextField()
         // Config TextField
@@ -105,7 +108,12 @@ class LLSafetyPasswordView: UIView, UITextFieldDelegate {
         }
         
         if (textField.text?.characters.count)! == passwordCount {
-            print("输入成功")
+            // 失去第一响应
+            textField.resignFirstResponder()
+            // 检查回调
+            if let check = checkHandler {
+                check(textField.text!)
+            }
         }
     }
 }
